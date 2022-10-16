@@ -3,6 +3,7 @@ import json
 import os
 import torchaudio
 from pathlib import Path
+from speechbrain.dataio.dataset import DynamicItemDataset
 
 training_raw_data_path = "../data/training/raw_data/common"
 training_label_data_path = "../data/training/label_data/common"
@@ -27,3 +28,10 @@ def search_json_file(dirname):
 
 def make_data_loader(json_file_list):
     pass
+
+
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
