@@ -6,6 +6,9 @@ import sys
 training_label_data_path = "../data/training/label_data/common"
 validation_label_data_path = "../data/validation/label_data/common"
 
+training_new_label_data_path = "../data/new_training/label_data/commmon"
+validation_new_label_data_path = "../data/new_validation/label_data/commons"
+
 def find_json(dirname, wav_dirname):
     try:
         filenames = os.listdir(dirname)
@@ -22,13 +25,15 @@ def find_json(dirname, wav_dirname):
 
 def modify_json(path, wav_dirname):
     json_obj = None
+    data = {}
     with open(path, 'r', encoding = 'utf-8') as fr:
         json_obj = json.load(fr)
         path_split = path.split("/")
-        json_obj['path'] = wav_dirname + '/' + path_split[-3] + '/' + path_split[-2] + '/' + json_obj["File"]["FileName"]
+        data["Path"] = wav_dirname + '/' + path_split[-3] + '/' + path_split[-2] + '/' + json_obj["File"]["FileName"]
+        data["Gender"] = json_obj["Speaker"]["Gender"]
     
     with open(path, 'w', encoding = 'utf-8') as fw:
-        json.dump(json_obj, fw, indent = '\t')
+        pass
 
 def main():
     if len(sys.argv) != 2:
