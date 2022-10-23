@@ -20,9 +20,10 @@ def make_new_json(path, new_path, wav_path):
     new_json_obj = {"Data" : {}}
     file_name = path.split("/")[-1]
     folder_name = path.split("/")[-2]
-    
+
     full_new_path = new_path + '/' + folder_name + '/' + file_name
     full_wav_path = wav_path + '/' + folder_name + '/' + file_name.split(".")[0] + ".wav"
+    full_wav_path = full_wav_path.replace("label", "raw")    
 
     new_json_obj["Data"]["Path"] = full_wav_path
 
@@ -33,10 +34,7 @@ def make_new_json(path, new_path, wav_path):
         else:
             new_json_obj["Data"]["Gender"] = "M"
         new_json_obj["Data"]["Age"] = data["녹음자정보"]["age"] // 10
-
-    #for key, value in new_json_obj.items():
-    #    print(key, ":", value)
-
+        
     try:
         if not os.path.exists(new_path + '/' + folder_name):
             os.makedirs(new_path + '/' + folder_name)
@@ -45,7 +43,6 @@ def make_new_json(path, new_path, wav_path):
 
     with open(full_new_path, "w+") as fw:
         json.dump(new_json_obj, fw)
-
 
 def main():
     if len(sys.argv) != 2:
