@@ -16,6 +16,8 @@ def make_dataset(json_file):
     dataset.add_dynamic_item(audio_pipeline)
     dataset.set_output_keys(["signal"])
     print(dataset[0])
+    print(dataset[1])
+    print(dataset[2])
 
 def main():
     make_dataset("./data.json")
