@@ -128,7 +128,3 @@ def main(device="cpu"):
 
 if __name__ == "__main__":
     main()
-
-
-def test_error(device):
-    main(device)
