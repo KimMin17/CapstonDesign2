@@ -2,9 +2,10 @@ import pathlib
 import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
 
+# Trains xvector model
 class XvectorBrain(sb.Brain):
-    #brain
     def compute_forward(self, batch, stage):
+        "Given an input batch it computes the speaker probabilities."
         batch = batch.to(self.device)
         wavs, lens = batch.sig
         feats = self.hparams.compute_features(wavs)
@@ -15,6 +16,7 @@ class XvectorBrain(sb.Brain):
         return outputs, lens
 
     def compute_objectives(self, predictions, batch, stage):
+        "Given the network predictions and targets computed the CE loss."
         predictions, lens = predictions
         spkid, spkid_lens = batch.spk_id_encoded
         loss = self.hparams.compute_cost(predictions, spkid, lens)
@@ -24,11 +26,13 @@ class XvectorBrain(sb.Brain):
 
         return loss
 
-    def on_stage_start(self, stage, epoch = None):
+    def on_stage_start(self, stage, epoch=None):
+        "Gets called when a stage (either training, validation, test) starts."
         if stage != sb.Stage.TRAIN:
             self.error_metrics = self.hparams.error_stats()
 
-    def on_stage_end(self, stage, epoch = None):
+    def on_stage_end(self, stage, stage_loss, epoch=None):
+        """Gets called at the end of a stage."""
         if stage == sb.Stage.TRAIN:
             self.train_loss = stage_loss
         if stage == sb.Stage.VALID:
@@ -40,8 +44,10 @@ class XvectorBrain(sb.Brain):
                 stage, "error: %.2f" % self.error_metrics.summarize("average")
             )
 
+
 def data_prep(data_folder, hparams):
-    #prepare dataset from JSON file
+    "Creates the datasets and their data processing pipelines."
+
     # 1. Declarations:
     train_data = sb.dataio.dataset.DynamicItemDataset.from_json(
         json_path=data_folder / "../annotation/ASR_train.json",
@@ -83,8 +89,8 @@ def data_prep(data_folder, hparams):
 
     return train_data, valid_data
 
-def main(device = "cpu"):
-    #main function
+
+def main(device="cpu"):
     experiment_dir = pathlib.Path(__file__).resolve().parent
     hparams_file = experiment_dir / "hyperparams.yaml"
     data_folder = "../../samples/ASR"
@@ -122,3 +128,7 @@ def main(device = "cpu"):
 
 if __name__ == "__main__":
     main()
+
+
+def test_error(device):
+    main(device)
