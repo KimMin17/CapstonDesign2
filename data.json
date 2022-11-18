@@ -1,5 +1,5 @@
 {
-    "Data0": {"Path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_0.wav", "Gender": "F", "Age": 2},
-    "Data1": {"Path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_1.wav", "Gender": "F", "Age": 2},
-    "Data2": {"Path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_2.wav", "Gender": "F", "Age": 2}
+    "data0": {"path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_0.wav", "gender": "F", "Age": 2},
+    "data1": {"path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_1.wav", "gender": "F", "Age": 2},
+    "data2": {"path": "../data/training/raw_data/training_raw_data_0/training_raw_data_0_2.wav", "gender": "F", "Age": 2}
 }
