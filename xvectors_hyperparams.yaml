@@ -1,3 +1,11 @@
+# #################################
+# Basic training parameters for speaker-id. We have first a network that
+# computes some embeddings. On the top of that, we employ a classifier.
+#
+# Author:
+#  * Mirco Ravanelli 2021
+# #################################
+
 # Seed needs to be set at top of yaml, before objects with parameters are made
 seed: 1986
 __set_seed: !!python/object/apply:torch.manual_seed [!ref <seed>]
@@ -29,18 +37,18 @@ error_stats: !name:speechbrain.utils.metric_stats.MetricStats
     metric: !name:speechbrain.nnet.losses.classification_error
         reduction: batch
 
-#ckpt_interval_minutes: 15 # save checkpoint every N min
+ckpt_interval_minutes: 15 # save checkpoint every N min
 
 # Feature parameters
 n_mels: 23
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 35
+number_of_epochs: 5
 batch_size: 16
 lr_start: 0.001
 lr_final: 0.0001
-n_classes: 28 # In this case, we have 28 speakers
+n_classes: 10 # In this case, we have 28 speakers
 emb_dim: 512 # dimensionality of the embeddings
 dataloader_options:
     batch_size: !ref <batch_size>

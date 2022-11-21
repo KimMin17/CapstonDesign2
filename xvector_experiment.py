@@ -240,7 +240,8 @@ def dataio_prep(hparams):
 
     return datasets
 
-def main(device="cpu"):
+if __name__ == "__main__":
+
     # Reading command line arguments.
     hparams_file, run_opts, overrides = sb.parse_arguments(sys.argv[1:])
 
@@ -270,5 +271,33 @@ def main(device="cpu"):
         },
     )
 
-if __name__ == "__main__":
-    main()
+    # Create dataset objects "train", "valid", and "test".
+    datasets = dataio_prep(hparams)
+
+    # Initialize the Brain object to prepare for mask training.
+    spk_id_brain = SpkIdBrain(
+        modules=hparams["modules"],
+        opt_class=hparams["opt_class"],
+        hparams=hparams,
+        run_opts=run_opts,
+        checkpointer=hparams["checkpointer"],
+    )
+
+    # The `fit()` method iterates the training loop, calling the methods
+    # necessary to update the parameters of the model. Since all objects
+    # with changing state are managed by the Checkpointer, training can be
+    # stopped at any point, and will be resumed on next call.
+    spk_id_brain.fit(
+        epoch_counter=spk_id_brain.hparams.epoch_counter,
+        train_set=datasets["train"],
+        valid_set=datasets["valid"],
+        train_loader_kwargs=hparams["dataloader_options"],
+        valid_loader_kwargs=hparams["dataloader_options"],
+    )
+
+    # Load the best checkpoint for evaluation
+    test_stats = spk_id_brain.evaluate(
+        test_set=datasets["test"],
+        min_key="error",
+        test_loader_kwargs=hparams["dataloader_options"],
+    )
