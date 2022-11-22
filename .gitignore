@@ -3,3 +3,6 @@ data.json
 DataLoaderTest.py
 simple.py
 xvector_sample.py
+data
+__pycache__
+results

@@ -7,7 +7,7 @@
 # #################################
 
 # Seed needs to be set at top of yaml, before objects with parameters are made
-seed: 1986
+seed: 1122
 __set_seed: !!python/object/apply:torch.manual_seed [!ref <seed>]
 
 # If you plan to train a system on an HPC cluster with a big dataset,
@@ -25,9 +25,9 @@ train_log: !ref <output_folder>/train_log.txt
 
 # Path where data manifest files will be stored
 # The data manifest files are created by the data preparation script.
-train_annotation: train.json
-valid_annotation: valid.json
-test_annotation: test.json
+train_annotation: simple_train.json
+valid_annotation: simple_valid.json
+test_annotation: simple_test.json
 
 # The train logger writes training statistics to a file, as well as stdout.
 train_logger: !new:speechbrain.utils.train_logger.FileTrainLogger
