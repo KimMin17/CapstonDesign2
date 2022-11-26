@@ -1,26 +1,10 @@
-import torchaudio
 from speechbrain.pretrained import EncoderClassifier
+import torchaudio
 
-hparam_path = "./results/speaker_id/1986"
-wav_path = "./test.wav"
-
-classifier = EncoderClassifier.from_hparams(source=hparam_path, savedir = "pretrained_model")
-signal, fs = torchaudio.load(wav_path)
-
-# Compute speaker embeddings
-embeddings = classifier.encode_batch(signal)
+classifier = EncoderClassifier.from_hparams(source = './', hparams_file='inference.yaml', savedir = "./content/best_model/")
 
 # Perform classification
+audio_file = 'sound.wav'
+signal, fs = torchaudio.load(audio_file)
 output_probs, score, index, text_lab = classifier.classify_batch(signal)
-
-# Posterior log probabilities
-print(output_probs)
-
-# Score (i.e, max log posteriors)
-print(score)
-
-# Index of the predicted speaker
-print(index)
-
-# Text label of the predicted speaker
-print(text_lab)
+print('Predicted: ' + text_lab[0])

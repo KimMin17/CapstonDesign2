@@ -7,3 +7,6 @@ data
 __pycache__
 results
 test.wav
+.gitignore
+pretrained_model
+content
